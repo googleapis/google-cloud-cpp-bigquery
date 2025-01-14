@@ -43,6 +43,16 @@ StatusOr<google::cloud::bigquery::v2::Job> ConnectionImpl::GetJob(
   return job_connection_->GetJob(request);
 }
 
+Status ConnectionImpl::DeleteJob(
+    google::cloud::bigquery::v2::DeleteJobRequest const& request,
+    Options opts) {
+  // TODO: Instead of creating an OptionsSpan, pass opts when job_connection_
+  // supports it.
+  internal::OptionsSpan span(internal::MergeOptions(
+      std::move(opts), internal::MergeOptions(options_, job_options_)));
+  return job_connection_->DeleteJob(request);
+}
+
 std::shared_ptr<bigquery_unified::Connection> MakeDefaultConnectionImpl(
     Options options) {
   auto job_options =

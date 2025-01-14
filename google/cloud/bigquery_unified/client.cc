@@ -58,7 +58,8 @@ StatusOr<google::cloud::bigquery::v2::Job> Client::GetJob(
 Status Client::DeleteJob(
     google::cloud::bigquery::v2::DeleteJobRequest const& request,
     Options opts) {
-  return internal::UnimplementedError("not implemented");
+  return connection_->DeleteJob(
+      request, internal::MergeOptions(std::move(opts), options_));
 }
 
 StreamRange<google::cloud::bigquery::v2::ListFormatJob> Client::ListJobs(

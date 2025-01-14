@@ -41,13 +41,29 @@ TEST_F(JobIntegrationTest, GetJob) {
   auto client = google::cloud::bigquery_unified::Client(connection);
 
   // TODO: hard coding this id is brittle but currently necessary.
-  std::string const job_id = "job_TyRhPS6z-5_e9JSwtT8ieuwDOdLD";
+  std::string const job_id = "bquxjob_61e82dc2_19465a751ec";
   bigquery_proto::GetJobRequest get_request;
   get_request.set_project_id(project_id_);
   get_request.set_job_id(job_id);
   auto job = client.GetJob(get_request);
   ASSERT_STATUS_OK(job);
   EXPECT_THAT(job->status().state(), Eq("DONE"));
+}
+
+TEST_F(JobIntegrationTest, DeleteJob) {
+  namespace bigquery_proto = google::cloud::bigquery::v2;
+  std::shared_ptr<Connection> connection =
+      google::cloud::bigquery_unified::MakeConnection();
+  auto client = google::cloud::bigquery_unified::Client(connection);
+
+  // TODO: hard coding this id is brittle but currently necessary.
+  std::string const job_id = "bquxjob_61e82dc2_19465a751ec";
+
+  bigquery_proto::DeleteJobRequest delete_request;
+  delete_request.set_project_id(project_id_);
+  delete_request.set_job_id(job_id);
+  auto status = client.DeleteJob(delete_request);
+  ASSERT_STATUS_OK(status);
 }
 
 }  // namespace
