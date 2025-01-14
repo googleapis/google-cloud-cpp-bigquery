@@ -41,7 +41,7 @@ TEST_F(JobIntegrationTest, GetJob) {
   auto client = google::cloud::bigquery_unified::Client(connection);
 
   // TODO: hard coding this id is brittle but currently necessary.
-  std::string const job_id = "bquxjob_61e82dc2_19465a751ec";
+  std::string const job_id = "bquxjob_606db6e8_19465e708c7";
   bigquery_proto::GetJobRequest get_request;
   get_request.set_project_id(project_id_);
   get_request.set_job_id(job_id);
@@ -57,7 +57,7 @@ TEST_F(JobIntegrationTest, DeleteJob) {
   auto client = google::cloud::bigquery_unified::Client(connection);
 
   // TODO: hard coding this id is brittle but currently necessary.
-  std::string const job_id = "bquxjob_61e82dc2_19465a751ec";
+  std::string const job_id = "bquxjob_606db6e8_19465e708c7";
 
   bigquery_proto::DeleteJobRequest delete_request;
   delete_request.set_project_id(project_id_);
