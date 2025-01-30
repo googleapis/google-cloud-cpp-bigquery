@@ -21,6 +21,7 @@
 #include "google/cloud/bigquery_unified/internal/arrow_reader.h"
 #include "google/cloud/bigquery_unified/internal/async_rest_long_running_operation_custom.h"
 #include "google/cloud/bigquery_unified/internal/default_options.h"
+#include "google/cloud/bigquery_unified/internal/tracing_connection.h"
 #include "google/cloud/bigquery_unified/job_options.h"
 #include "google/cloud/bigquery_unified/read_options.h"
 #include "google/cloud/bigquery_unified/retry_policy.h"
@@ -446,10 +447,11 @@ std::shared_ptr<bigquery_unified::Connection> MakeDefaultConnectionImpl(
   // TODO: We should probably add a TracingConnection decorator in order to
   //  associate all the various rpcs that are called as part of these
   //  operations.
-  return std::make_shared<bigquery_unified_internal::ConnectionImpl>(
-      std::move(read_connection), std::move(job_connection),
-      std::move(read_options), std::move(job_options), std::move(job_stub),
-      std::move(background), std::move(options));
+  return MakeTracingConnection(
+      std::make_shared<bigquery_unified_internal::ConnectionImpl>(
+          std::move(read_connection), std::move(job_connection),
+          std::move(read_options), std::move(job_options), std::move(job_stub),
+          std::move(background), std::move(options)));
 }
 
 GOOGLE_CLOUD_CPP_BIGQUERY_INLINE_NAMESPACE_END
