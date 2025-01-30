@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef GOOGLE_CLOUD_CPP_BIGQUERY_GOOGLE_CLOUD_BIGQUERY_UNIFIED_INTERNAL_TRACING_CONNECTIONL_H
-#define GOOGLE_CLOUD_CPP_BIGQUERY_GOOGLE_CLOUD_BIGQUERY_UNIFIED_INTERNAL_TRACING_CONNECTIONL_H
+#ifndef GOOGLE_CLOUD_CPP_BIGQUERY_GOOGLE_CLOUD_BIGQUERY_UNIFIED_INTERNAL_TRACING_CONNECTION_H
+#define GOOGLE_CLOUD_CPP_BIGQUERY_GOOGLE_CLOUD_BIGQUERY_UNIFIED_INTERNAL_TRACING_CONNECTION_H
 
+#include "google/cloud/bigquery/storage/v1/bigquery_read_connection.h"
 #include "google/cloud/bigquery_unified/connection.h"
 #include "google/cloud/bigquery_unified/version.h"
 #include "google/cloud/bigquerycontrol/v2/job_connection.h"
-#include "google/cloud/bigquery/storage/v1/bigquery_read_connection.h"
 #include <memory>
 
 namespace google::cloud::bigquery_unified_internal {
@@ -28,8 +28,8 @@ class TracingConnection : public bigquery_unified::Connection {
  public:
   ~TracingConnection() override = default;
 
-  explicit TracingConnection(std::shared_ptr<bigquery_unified::Connection>
-                                 child);
+  explicit TracingConnection(
+      std::shared_ptr<bigquery_unified::Connection> child);
 
   Options options() override { return child_->options(); }
 
@@ -83,11 +83,10 @@ class TracingConnection : public bigquery_unified::Connection {
  * The connection is only decorated if tracing is enabled (as determined by the
  * connection's options).
  */
-std::shared_ptr<bigquery_unified::Connection>
-MakeTracingConnection(
+std::shared_ptr<bigquery_unified::Connection> MakeTracingConnection(
     std::shared_ptr<bigquery_unified::Connection> conn);
 
 GOOGLE_CLOUD_CPP_BIGQUERY_INLINE_NAMESPACE_END
-}  // namespace google::cloud::bigquery_unified_internal 
+}  // namespace google::cloud::bigquery_unified_internal
 
-#endif // GOOGLE_CLOUD_CPP_BIGQUERY_GOOGLE_CLOUD_BIGQUERY_UNIFIED_INTERNAL_TRACING_CONNECTIONL_H
+#endif  // GOOGLE_CLOUD_CPP_BIGQUERY_GOOGLE_CLOUD_BIGQUERY_UNIFIED_INTERNAL_TRACING_CONNECTION_H
