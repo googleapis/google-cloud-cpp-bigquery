@@ -20,7 +20,7 @@ include(CreateBazelConfig)
 
 find_package(google_cloud_cpp_bigquery REQUIRED)
 find_package(google_cloud_cpp_bigquerycontrol REQUIRED)
-find_package(Arrow REQUIRED)
+find_package(Arrow CONFIG REQUIRED)
 
 # Use the shared library if it's available.
 include(CMakePrintHelpers)
@@ -161,7 +161,7 @@ set(bigquery_unified_library_files
 
 set(bigquery_unified_deps
     # cmake-format: sort
-    Arrow::${arrow_target}
+    "$<IF:$<BOOL:${ARROW_BUILD_STATIC}>,Arrow::arrow_static,Arrow::arrow_shared>"
     google-cloud-cpp-bigquery::common
     google-cloud-cpp::bigquery
     google-cloud-cpp::experimental-bigquerycontrol
