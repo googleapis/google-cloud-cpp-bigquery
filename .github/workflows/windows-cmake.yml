@@ -98,7 +98,7 @@ jobs:
     - uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # @v1.13.0
       with:
         arch: ${{ matrix.arch }}
-    - name: Build google-cloud-cpp
+    - name: Build google-cloud-cpp-bigquery
       shell: bash
       run: |
         export VCPKG_ROOT="${TEMP}/.build/vcpkg"

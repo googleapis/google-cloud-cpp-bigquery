@@ -23,11 +23,15 @@ find_package(google_cloud_cpp_bigquerycontrol REQUIRED)
 find_package(Arrow REQUIRED)
 
 # Use the shared library if it's available.
-if (${ARROW_FULL_SO_VERSION})
-    set(arrow_target "arrow_shared")
-else ()
+include(CMakePrintHelpers)
+cmake_print_variables(ARROW_FULL_SO_VERSION)
+
+if (${ARROW_FULL_SO_VERSION} STREQUAL "")
     set(arrow_target "arrow_static")
+else ()
+    set(arrow_target "arrow_shared")
 endif ()
+cmake_print_variables(arrow_target)
 
 function (bigquery_unified_library library_name library_alias)
     cmake_parse_arguments(_opt "EXPERIMENTAL;TRANSITION;INSTALL" "INITIAL_YEAR"
