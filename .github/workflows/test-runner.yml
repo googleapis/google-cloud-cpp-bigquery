@@ -137,25 +137,25 @@ jobs:
       vcpkg-cache-mode: 'readwrite'
       execute-integration-tests: true
     secrets: inherit
-#  windows-cmake:
-#    name: Windows-CMake
-#    needs: [pre-flight]
-#    uses: ./.github/workflows/windows-cmake.yml
-#    with:
-#      checkout-ref: ${{ needs.pre-flight.outputs.checkout-sha }}
-#      # Build the full matrix only on push events to the default branch, or
-#      # when PR gets the has a `gha:full-build` label, or when it had the
-#      # label already and it gets a new commit.
-#      full-matrix: |-
-#        ${{
-#          github.event_name == 'schedule' ||
-#          github.event_name == 'push' ||
-#          contains(github.event.pull_request.labels.*.name, 'gha:full-build')
-#        }}
-#      sccache-mode: 'READ_WRITE'
-#      vcpkg-cache-mode: 'readwrite'
-#      execute-integration-tests: true
-#    secrets: inherit
+  windows-cmake:
+    name: Windows-CMake
+    needs: [pre-flight]
+    uses: ./.github/workflows/windows-cmake.yml
+    with:
+      checkout-ref: ${{ needs.pre-flight.outputs.checkout-sha }}
+      # Build the full matrix only on push events to the default branch, or
+      # when PR gets the has a `gha:full-build` label, or when it had the
+      # label already and it gets a new commit.
+      full-matrix: |-
+        ${{
+          github.event_name == 'schedule' ||
+          github.event_name == 'push' ||
+          contains(github.event.pull_request.labels.*.name, 'gha:full-build')
+        }}
+      sccache-mode: 'READ_WRITE'
+      vcpkg-cache-mode: 'readwrite'
+      execute-integration-tests: true
+    secrets: inherit
   notify:
     name: Notify-Google-Chat
     # Wait until all the other jobs have completed.
