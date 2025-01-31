@@ -233,8 +233,8 @@ jobs:
 #          skipped="$(printf ",-%s" "${skipped_features[@]}")"
 #          echo "features=__ga_libraries__,__experimental_libraries__,${skipped:1}" >> "${GITHUB_OUTPUT}"
 #        fi
-    - name: Install bash >= 5.x and Ninja
-      run: brew install bash ninja
+    - name: Install bash >= 5.x, Ninja, and bison
+      run: brew install bash ninja bison
     - name: Pre Tests Disk Space
       run: df -m
     - name: Install CMake==3.27.2
