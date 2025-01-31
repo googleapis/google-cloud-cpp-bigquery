@@ -20,7 +20,7 @@ include(CreateBazelConfig)
 
 find_package(google_cloud_cpp_bigquery REQUIRED)
 find_package(google_cloud_cpp_bigquerycontrol REQUIRED)
-find_package(Arrow REQUIRED)
+find_package(Arrow REQUIRED CONFIG)
 
 function (bigquery_unified_library library_name library_alias)
     cmake_parse_arguments(_opt "EXPERIMENTAL;TRANSITION;INSTALL" "INITIAL_YEAR"
@@ -150,7 +150,7 @@ set(bigquery_unified_library_files
 
 set(bigquery_unified_deps
     # cmake-format: sort
-    Arrow::arrow_static
+    Arrow::arrow_shared
     google-cloud-cpp-bigquery::common
     google-cloud-cpp::bigquery
     google-cloud-cpp::experimental-bigquerycontrol

@@ -41,12 +41,10 @@ jobs:
         exclude-from-full-trick: [ true ]
         msvc: [ msvc-2022 ]
         build_type: [ Debug, Release ]
-        arch: [ x64, x86 ]
+        # arrow is only supported on 'x64 | (arm64 & !windows)',
+        # which does not match x86-windows
+        arch: [ x64 ]
         shard: [ All ]
-        exclude:
-        # No need to duplicate testing with x86 mode and Debug mode
-        - arch: x86
-          build_type: Debug
     steps:
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       with:
