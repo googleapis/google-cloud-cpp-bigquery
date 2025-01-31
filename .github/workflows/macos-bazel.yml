@@ -210,5 +210,5 @@ jobs:
     - name: Post Tests Disk Space
       run: df -m
     env:
-      BAZEL_REMOTE_CACHE: https://storage.googleapis.com/cloud-cpp-community-gha-cache/bazel-cache/${{ matrix.os }}
+      BAZEL_REMOTE_CACHE: https://storage.googleapis.com/cloud-cpp-community-gha-cache/bigquery-bazel-cache/${{ matrix.os }}
       GHA_TEST_BUCKET: "gcs-grpc-team-cloud-cpp-testing-bucket"
