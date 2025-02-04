@@ -20,6 +20,13 @@ package(default_visibility = ["//:__subpackages__"])
 
 licenses(["notice"])  # Apache 2.0
 
+config_setting(
+    name = "enable_opentelemetry",
+    flag_values = {
+        "@com_google_googleapis_google_cloud_cpp//:enable_opentelemetry": "true",
+    },
+)
+
 cc_library(
     name = "google_cloud_cpp_bigquery_bigquery_unified_testing_private",
     testonly = True,
@@ -34,6 +41,12 @@ cc_library(
             "GOOGLE_CLOUD_CPP_HAVE_GETRUSAGE",
         ],
         "//conditions:default": [],
+    }) + select({
+        ":enable_opentelemetry": [
+            # Enable OpenTelemetry features in google-cloud-cpp
+            "GOOGLE_CLOUD_CPP_BIGQUERY_HAVE_OPENTELEMETRY",
+        ],
+        "//conditions:default": [],
     }),
     deps = [
         "//:common",
@@ -41,14 +54,11 @@ cc_library(
         "@com_google_absl//absl/debugging:symbolize",
         "@com_google_googletest//:gtest_main",
         "@google_cloud_cpp//:common",
-    ],
-    # Enable the config when the bool flag is visible.
-    # https://github.com/googleapis/google-cloud-cpp-bigquery/issues/98
-    # + select({
-    #     ":enable_opentelemetry": [
-    #         "@io_opentelemetry_cpp//exporters/memory:in_memory_span_exporter",
-    #         "@io_opentelemetry_cpp//sdk/src/trace",
-    #     ],
-    #     "//conditions:default": [],
-    # })
+    ] + select({
+        ":enable_opentelemetry": [
+            "@io_opentelemetry_cpp//exporters/memory:in_memory_span_exporter",
+            "@io_opentelemetry_cpp//sdk/src/trace",
+        ],
+        "//conditions:default": [],
+    }),
 )

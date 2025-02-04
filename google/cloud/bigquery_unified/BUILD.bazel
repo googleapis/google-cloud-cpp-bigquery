@@ -24,7 +24,7 @@ licenses(["notice"])  # Apache 2.0
 config_setting(
     name = "enable_opentelemetry",
     flag_values = {
-        "@google_cloud_cpp//:enable_opentelemetry": "true",
+        "@com_google_googleapis_google_cloud_cpp//:enable_opentelemetry": "true",
     },
 )
 
@@ -60,15 +60,13 @@ cc_library(
     name = "google_cloud_cpp_bigquery_bigquery_unified",
     srcs = google_cloud_cpp_bigquery_bigquery_unified_srcs,
     hdrs = google_cloud_cpp_bigquery_bigquery_unified_hdrs,
-    # Enable the config when the bool flag is visible.
-    # https://github.com/googleapis/google-cloud-cpp-bigquery/issues/98
-    # defines = select({
-    #     ":enable_opentelemetry": [
-    #         # Enable OpenTelemetry features in google-cloud-cpp
-    #         "GOOGLE_CLOUD_CPP_BIGQUERY_HAVE_OPENTELEMETRY",
-    #     ],
-    #     "//conditions:default": [],
-    # }),
+    defines = select({
+        ":enable_opentelemetry": [
+            # Enable OpenTelemetry features in google-cloud-cpp
+            "GOOGLE_CLOUD_CPP_BIGQUERY_HAVE_OPENTELEMETRY",
+        ],
+        "//conditions:default": [],
+    }),
     visibility = ["//:__pkg__"],
     deps = [
         ":google_cloud_cpp_bigquery_common",

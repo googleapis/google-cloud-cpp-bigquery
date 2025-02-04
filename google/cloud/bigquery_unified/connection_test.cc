@@ -13,8 +13,10 @@
 // limitations under the License.
 
 #include "google/cloud/bigquery_unified/connection.h"
+#include "google/cloud/bigquery_unified/job_options.h"
 #include "google/cloud/bigquery_unified/testing_util/opentelemetry_matchers.h"
 #include "google/cloud/bigquery_unified/version.h"
+#include "google/cloud/common_options.h"
 
 namespace google::cloud::bigquery_unified {
 GOOGLE_CLOUD_CPP_BIGQUERY_INLINE_NAMESPACE_BEGIN
@@ -30,7 +32,12 @@ using ::testing::Not;
 TEST(BigQueryUnifiedConnectionTest, TracingEnabled) {
   auto span_catcher = testing_util::InstallSpanCatcher();
 
-  auto options = EnableTracing(Options{});
+  auto options = EnableTracing(
+      Options{}
+          .set<EndpointOption>("localhost:1")
+          .set<bigquery_unified::RetryPolicyOption>(
+              std::make_shared<bigquery_unified::LimitedErrorCountRetryPolicy>(
+                  0)));
   auto conn = MakeConnection(std::move(options));
   google::cloud::internal::OptionsSpan span(
       google::cloud::internal::MergeOptions(Options{}, conn->options()));
@@ -46,7 +53,12 @@ TEST(BigQueryUnifiedConnectionTest, TracingEnabled) {
 TEST(BigQueryUnifiedConnectionTest, TracingDisabled) {
   auto span_catcher = testing_util::InstallSpanCatcher();
 
-  auto options = DisableTracing(Options{});
+  auto options = DisableTracing(
+      Options{}
+          .set<EndpointOption>("localhost:1")
+          .set<bigquery_unified::RetryPolicyOption>(
+              std::make_shared<bigquery_unified::LimitedErrorCountRetryPolicy>(
+                  0)));
   auto conn = MakeConnection(std::move(options));
   google::cloud::internal::OptionsSpan span(
       google::cloud::internal::MergeOptions(Options{}, conn->options()));
