@@ -14,9 +14,6 @@
 
 """Load dependencies needed for google-cloud-cpp development / Phase 2."""
 
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
-
 def gl_cpp_development2(name = None):
     """Loads dependencies needed to develop the google-cloud-cpp libraries.
 
@@ -27,16 +24,3 @@ def gl_cpp_development2(name = None):
         name: Unused. It is conventional to provide a `name` argument to all
             workspace functions.
     """
-
-    # An XML parser and generator, this is only used in //docfx.
-    # This is an internal tool used to generate the reference documentation.
-    maybe(
-        http_archive,
-        name = "com_github_zeux_pugixml",
-        urls = [
-            "https://github.com/zeux/pugixml/archive/v1.14.tar.gz",
-        ],
-        sha256 = "610f98375424b5614754a6f34a491adbddaaec074e9044577d965160ec103d2e",
-        strip_prefix = "pugixml-1.14",
-        build_file = Label("//bazel:pugixml.BUILD"),
-    )
