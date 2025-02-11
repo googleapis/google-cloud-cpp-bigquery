@@ -20,15 +20,7 @@
 #include "google/cloud/stream_range.h"
 #include <vector>
 
-namespace google::cloud::bigquery_unified {
-/**
- * Contains helpers for testing the Google Cloud C++ Client Libraries.
- *
- * The symbols defined in this namespace are part of `google-cloud-cpp`'s public
- * API. Application developers may use them when mocking the client libraries in
- * their own tests.
- */
-namespace mocks {
+namespace google::cloud::bigquery_unified_mocks {
 GOOGLE_CLOUD_CPP_BIGQUERY_INLINE_NAMESPACE_BEGIN
 
 /**
@@ -63,7 +55,6 @@ StreamRange<T> MakeStreamRange(std::vector<T> values,
 }
 
 GOOGLE_CLOUD_CPP_BIGQUERY_INLINE_NAMESPACE_END
-}  // namespace mocks
-}  // namespace google::cloud::bigquery_unified
+}  // namespace google::cloud::bigquery_unified_mocks
 
 #endif  // GOOGLE_CLOUD_CPP_BIGQUERY_GOOGLE_CLOUD_BIGQUERY_UNIFIED_MOCKS_MOCK_STREAM_RANGE_H

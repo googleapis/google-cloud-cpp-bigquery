@@ -232,7 +232,7 @@ class Client {
   /// Unless `bigquery_unified::BillingProjectOption` is set, the billing
   /// project is determined by interrogating the provided `Job`.
   ///
-  /// @param request Unary RPCs, such as the one wrapped by this
+  /// @param job Unary RPCs, such as the one wrapped by this
   ///     function, receive a single `request` proto message which includes all
   ///     the inputs for the RPC. In this case, the proto message is a
   ///     [google.cloud.bigquery.v2.Job].

@@ -27,6 +27,11 @@ namespace google::cloud::bigquery_unified {
 GOOGLE_CLOUD_CPP_BIGQUERY_INLINE_NAMESPACE_BEGIN
 
 /**
+ * @defgroup google-cloud-bigquery-unified-options BigQuery Unified Options
+ * @{
+ */
+
+/**
  * Use with `google::cloud::Options` to configure the backoff policy.
  *
  * @ingroup google-cloud-bigquery-unified-options
@@ -70,6 +75,8 @@ struct PollingPolicyOption {
 struct RetryPolicyOption {
   using Type = std::shared_ptr<bigquery_unified::RetryPolicy>;
 };
+
+/** @} */
 
 using BigQueryJobOptionList =
     OptionList<BackoffPolicyOption, BillingProjectOption,
