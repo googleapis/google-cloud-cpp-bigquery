@@ -24,6 +24,7 @@ namespace {
 
 using ::google::cloud::bigquery_unified::testing_util::IsOkAndHolds;
 using ::google::cloud::bigquery_unified::testing_util::StatusIs;
+using ::google::cloud::bigquery_unified_mocks::MockConnection;
 using ::testing::AllOf;
 using ::testing::Eq;
 using ::testing::HasSubstr;

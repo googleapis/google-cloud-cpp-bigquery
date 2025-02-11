@@ -39,6 +39,7 @@ using ::google::cloud::bigquery_unified::testing_util::SpanNamed;
 using ::google::cloud::bigquery_unified::testing_util::SpanWithStatus;
 using ::google::cloud::bigquery_unified::testing_util::StatusIs;
 using ::google::cloud::bigquery_unified::testing_util::ThereIsAnActiveSpan;
+using ::google::cloud::bigquery_unified_mocks::MockConnection;
 using ::testing::_;
 using ::testing::A;
 using ::testing::AllOf;
@@ -53,7 +54,7 @@ auto constexpr kErrorCode = "ABORTED";
 TEST(TracingConnectionTest, CancelJobAwait) {
   auto span_catcher = InstallSpanCatcher();
 
-  auto mock = std::make_shared<bigquery_unified::MockConnection>();
+  auto mock = std::make_shared<MockConnection>();
   EXPECT_CALL(
       *mock,
       CancelJob(A<google::cloud::bigquery::v2::CancelJobRequest const&>(),
@@ -84,7 +85,7 @@ TEST(TracingConnectionTest, CancelJobAwait) {
 TEST(TracingConnectionTest, CancelJobNoAwait) {
   auto span_catcher = InstallSpanCatcher();
 
-  auto mock = std::make_shared<bigquery_unified::MockConnection>();
+  auto mock = std::make_shared<MockConnection>();
   EXPECT_CALL(
       *mock,
       CancelJob(A<google::cloud::NoAwaitTag>(),
@@ -115,7 +116,7 @@ TEST(TracingConnectionTest, CancelJobNoAwait) {
 TEST(TracingConnectionTest, CancelJobPoll) {
   auto span_catcher = InstallSpanCatcher();
 
-  auto mock = std::make_shared<bigquery_unified::MockConnection>();
+  auto mock = std::make_shared<MockConnection>();
   EXPECT_CALL(*mock,
               CancelJob(A<google::cloud::bigquery::v2::JobReference const&>(),
                         A<Options>()))
@@ -145,7 +146,7 @@ TEST(TracingConnectionTest, CancelJobPoll) {
 TEST(TracingConnectionTest, GetJob) {
   auto span_catcher = InstallSpanCatcher();
 
-  auto mock = std::make_shared<bigquery_unified::MockConnection>();
+  auto mock = std::make_shared<MockConnection>();
   EXPECT_CALL(*mock, GetJob).WillOnce([] {
     EXPECT_TRUE(ThereIsAnActiveSpan());
     return internal::AbortedError("fail");
@@ -170,7 +171,7 @@ TEST(TracingConnectionTest, GetJob) {
 TEST(TracingConnectionTest, InsertJobAwait) {
   auto span_catcher = InstallSpanCatcher();
 
-  auto mock = std::make_shared<bigquery_unified::MockConnection>();
+  auto mock = std::make_shared<MockConnection>();
   EXPECT_CALL(*mock, InsertJob(A<google::cloud::bigquery::v2::Job const&>(),
                                A<Options>()))
       .WillOnce([] {
@@ -199,7 +200,7 @@ TEST(TracingConnectionTest, InsertJobAwait) {
 TEST(TracingConnectionTest, InsertJobNoAwait) {
   auto span_catcher = InstallSpanCatcher();
 
-  auto mock = std::make_shared<bigquery_unified::MockConnection>();
+  auto mock = std::make_shared<MockConnection>();
   EXPECT_CALL(*mock, InsertJob(A<google::cloud::NoAwaitTag>(),
                                A<google::cloud::bigquery::v2::Job const&>(),
                                A<Options>()))
@@ -228,7 +229,7 @@ TEST(TracingConnectionTest, InsertJobNoAwait) {
 TEST(TracingConnectionTest, InsertJobPoll) {
   auto span_catcher = InstallSpanCatcher();
 
-  auto mock = std::make_shared<bigquery_unified::MockConnection>();
+  auto mock = std::make_shared<MockConnection>();
   EXPECT_CALL(*mock,
               InsertJob(A<google::cloud::bigquery::v2::JobReference const&>(),
                         A<Options>()))
@@ -258,7 +259,7 @@ TEST(TracingConnectionTest, InsertJobPoll) {
 TEST(TracingConnectionTest, DeleteJob) {
   auto span_catcher = InstallSpanCatcher();
 
-  auto mock = std::make_shared<bigquery_unified::MockConnection>();
+  auto mock = std::make_shared<MockConnection>();
   EXPECT_CALL(*mock, DeleteJob).WillOnce([] {
     EXPECT_TRUE(ThereIsAnActiveSpan());
     return internal::AbortedError("fail");
@@ -283,11 +284,11 @@ TEST(TracingConnectionTest, DeleteJob) {
 TEST(TracingConnectionTest, ListJobs) {
   auto span_catcher = InstallSpanCatcher();
 
-  auto mock = std::make_shared<bigquery_unified::MockConnection>();
+  auto mock = std::make_shared<MockConnection>();
   EXPECT_CALL(*mock, ListJobs).WillOnce([] {
     EXPECT_TRUE(ThereIsAnActiveSpan());
     EXPECT_TRUE(OTelContextCaptured());
-    return bigquery_unified::mocks::MakeStreamRange<
+    return bigquery_unified_mocks::MakeStreamRange<
         google::cloud::bigquery::v2::ListFormatJob>(
         {}, internal::AbortedError("fail"));
   });

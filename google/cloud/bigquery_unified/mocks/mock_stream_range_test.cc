@@ -16,8 +16,7 @@
 #include "google/cloud/bigquery_unified/testing_util/status_matchers.h"
 #include <gmock/gmock.h>
 
-namespace google::cloud::bigquery_unified {
-namespace mocks {
+namespace google::cloud::bigquery_unified_mocks {
 GOOGLE_CLOUD_CPP_BIGQUERY_INLINE_NAMESPACE_BEGIN
 namespace {
 
@@ -72,5 +71,4 @@ TEST(MakeStreamRangeTest, ValuesThenStatus) {
 }  // namespace
 
 GOOGLE_CLOUD_CPP_BIGQUERY_INLINE_NAMESPACE_END
-}  // namespace mocks
-}  // namespace google::cloud::bigquery_unified
+}  // namespace google::cloud::bigquery_unified_mocks
