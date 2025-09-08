@@ -71,10 +71,10 @@ def gl_cpp_workspace0(name = None):
         http_archive,
         name = "rules_cc",
         urls = [
-            "https://github.com/bazelbuild/rules_cc/releases/download/0.0.15/rules_cc-0.0.15.tar.gz",
+            "https://github.com/bazelbuild/rules_cc/releases/download/0.2.4/rules_cc-0.2.4.tar.gz",
         ],
-        sha256 = "f4aadd8387f381033a9ad0500443a52a0cea5f8ad1ede4369d3c614eb7b2682e",
-        strip_prefix = "rules_cc-0.0.15",
+        sha256 = "8dcd63392f0bb48adf74f413a9f39ba0fedcb8f99bf085a3b450f06d171dbb6d",
+        strip_prefix = "rules_cc-0.2.4",
     )
 
     # protobuf requires this
