@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ~~~
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 if (NOT BUILD_TESTING)
     return()
@@ -49,6 +52,9 @@ target_link_libraries(
            google-cloud-cpp::common GTest::gmock)
 google_cloud_cpp_add_common_options(
     google_cloud_cpp_bigquery_bigquery_unified_testing)
+target_compile_definitions(
+    google_cloud_cpp_bigquery_bigquery_unified_testing
+    PRIVATE _GLIBCXX_USE_CXX11_ABI=1)
 
 include(CheckCXXSymbolExists)
 check_cxx_symbol_exists(getrusage sys/resource.h
