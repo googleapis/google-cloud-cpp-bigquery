@@ -203,7 +203,7 @@ sudo cmake --build cmake-out --target install
 
 #### google-cloud-cpp
 mkdir -p $HOME/Downloads/google-cloud-cpp && cd $HOME/Downloads/google-cloud-cpp
-curl -fsSL https://github.com/googleapis/google-cloud-cpp/archive/v2.35.0.tar.gz | \
+curl -fsSL https://github.com/googleapis/google-cloud-cpp/archive/v2.47.0.tar.gz | \
     tar -xzf - --strip-components=1 && \
     cmake \
       -GNinja -S . -B cmake-out \
@@ -331,7 +331,7 @@ sudo cmake --build cmake-out --target install
 
 #### google-cloud-cpp
 mkdir -p $HOME/Downloads/google-cloud-cpp && cd $HOME/Downloads/google-cloud-cpp
-curl -fsSL https://github.com/googleapis/google-cloud-cpp/archive/v2.35.0.tar.gz | \
+curl -fsSL https://github.com/googleapis/google-cloud-cpp/archive/v2.47.0.tar.gz | \
     tar -xzf - --strip-components=1 && \
     cmake \
       -GNinja -S . -B cmake-out \
@@ -449,7 +449,7 @@ sudo cmake --build cmake-out --target install
 
 #### google-cloud-cpp
 mkdir -p $HOME/Downloads/google-cloud-cpp && cd $HOME/Downloads/google-cloud-cpp
-curl -fsSL https://github.com/googleapis/google-cloud-cpp/archive/v2.35.0.tar.gz | \
+curl -fsSL https://github.com/googleapis/google-cloud-cpp/archive/v2.47.0.tar.gz | \
     tar -xzf - --strip-components=1 && \
     cmake \
       -GNinja -S . -B cmake-out \
@@ -590,7 +590,7 @@ sudo cmake --build cmake-out --target install
 
 #### google-cloud-cpp
 mkdir -p $HOME/Downloads/google-cloud-cpp && cd $HOME/Downloads/google-cloud-cpp
-curl -fsSL https://github.com/googleapis/google-cloud-cpp/archive/v2.35.0.tar.gz | \
+curl -fsSL https://github.com/googleapis/google-cloud-cpp/archive/v2.47.0.tar.gz | \
     tar -xzf - --strip-components=1 && \
     cmake \
       -GNinja -S . -B cmake-out \
@@ -784,7 +784,7 @@ sudo cmake --build cmake-out --target install
 
 #### google-cloud-cpp
 mkdir -p $HOME/Downloads/google-cloud-cpp && cd $HOME/Downloads/google-cloud-cpp
-curl -fsSL https://github.com/googleapis/google-cloud-cpp/archive/v2.35.0.tar.gz | \
+curl -fsSL https://github.com/googleapis/google-cloud-cpp/archive/v2.47.0.tar.gz | \
     tar -xzf - --strip-components=1 && \
     cmake \
       -GNinja -S . -B cmake-out \
@@ -1001,7 +1001,7 @@ sudo cmake --build cmake-out --target install
 
 #### google-cloud-cpp
 mkdir -p $HOME/Downloads/google-cloud-cpp && cd $HOME/Downloads/google-cloud-cpp
-curl -fsSL https://github.com/googleapis/google-cloud-cpp/archive/v2.35.0.tar.gz | \
+curl -fsSL https://github.com/googleapis/google-cloud-cpp/archive/v2.47.0.tar.gz | \
     tar -xzf - --strip-components=1 && \
     cmake \
       -GNinja -S . -B cmake-out \
@@ -1137,7 +1137,7 @@ sudo cmake --build cmake-out --target install
 
 #### google-cloud-cpp
 mkdir -p $HOME/Downloads/google-cloud-cpp && cd $HOME/Downloads/google-cloud-cpp
-curl -fsSL https://github.com/googleapis/google-cloud-cpp/archive/v2.35.0.tar.gz | \
+curl -fsSL https://github.com/googleapis/google-cloud-cpp/archive/v2.47.0.tar.gz | \
     tar -xzf - --strip-components=1 && \
     cmake \
       -GNinja -S . -B cmake-out \
@@ -1352,7 +1352,7 @@ sudo cmake --build cmake-out --target install
 
 #### google-cloud-cpp
 mkdir -p $HOME/Downloads/google-cloud-cpp && cd $HOME/Downloads/google-cloud-cpp
-curl -fsSL https://github.com/googleapis/google-cloud-cpp/archive/v2.35.0.tar.gz | \
+curl -fsSL https://github.com/googleapis/google-cloud-cpp/archive/v2.47.0.tar.gz | \
     tar -xzf - --strip-components=1 && \
     cmake \
       -GNinja -S . -B cmake-out \
@@ -1604,7 +1604,7 @@ sudo cmake --build cmake-out --target install
 
 #### google-cloud-cpp
 mkdir -p $HOME/Downloads/google-cloud-cpp && cd $HOME/Downloads/google-cloud-cpp
-curl -fsSL https://github.com/googleapis/google-cloud-cpp/archive/v2.35.0.tar.gz | \
+curl -fsSL https://github.com/googleapis/google-cloud-cpp/archive/v2.47.0.tar.gz | \
     tar -xzf - --strip-components=1 && \
     cmake \
       -GNinja -S . -B cmake-out \

@@ -113,7 +113,7 @@ RUN curl -fsSL https://github.com/apache/arrow/archive/apache-arrow-18.1.0.tar.g
 
 # #### google-cloud-cpp
 WORKDIR /var/tmp/build/google-cloud-cpp
-RUN curl -fsSL https://github.com/googleapis/google-cloud-cpp/archive/v2.35.0.tar.gz | \
+RUN curl -fsSL https://github.com/googleapis/google-cloud-cpp/archive/v2.47.0.tar.gz | \
     tar -xzf - --strip-components=1 && \
     cmake \
       -GNinja -S . -B cmake-out \
