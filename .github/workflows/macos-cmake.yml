@@ -68,10 +68,12 @@ jobs:
       if: ${{ inputs.sccache-mode != 'DISABLED' }}
       working-directory: "${{runner.temp}}"
       run: |
+        mkdir -p /Users/runner/.cargo/bin
         curl -fsSL https://github.com/mozilla/sccache/releases/download/v0.9.1/sccache-v0.9.1-aarch64-apple-darwin.tar.gz | \
           tar -zxf - --strip-components=1 && \
         chmod +x sccache && \
         mv sccache /Users/runner/.cargo/bin/sccache
+        echo "/Users/runner/.cargo/bin" >> "${GITHUB_PATH}"
     - name: Download and Install vcpkg
       working-directory: "${{runner.temp}}"
       env:
