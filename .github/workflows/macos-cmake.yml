@@ -3,17 +3,13 @@ name: macOS-CMake-Builds
 on:
   workflow_call:
     inputs:
-      checkout-ref:
-        required: true
-        description: "The ref we want to compile"
-        type: string
       full-matrix:
         required: true
         description: "Build the full matrix"
         type: boolean
       sccache-mode:
         required: true
-        description: "READ_WRITE or DISABLED"
+        description: "READ_WRITE, READ_ONLY, or DISABLED"
         type: string
       vcpkg-cache-mode:
         required: true
@@ -33,7 +29,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     permissions:
       contents: 'read'
-      id-token: 'write'
     strategy:
       # Continue other builds even if one fails
       fail-fast: false
@@ -44,7 +39,7 @@ jobs:
     steps:
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       with:
-        ref: ${{ inputs.checkout-ref }}
+        persist-credentials: false
     - uses: google-github-actions/auth@v2
       if: ${{ inputs.sccache-mode == 'READ_WRITE' && inputs.vcpkg-cache-mode == 'readwrite' }}
       with:
@@ -86,16 +81,20 @@ jobs:
         mv sccache /Users/runner/.cargo/bin/sccache
     - name: Download and Install vcpkg
       working-directory: "${{runner.temp}}"
+      env:
+        VCPKG_VERSION: ${{ steps.dynamic.outputs.vcpkg-version }}
       run: |
         mkdir -p vcpkg
-        curl -fsSL "https://github.com/microsoft/vcpkg/archive/${{ steps.dynamic.outputs.vcpkg-version }}.tar.gz" |
+        curl -fsSL "https://github.com/microsoft/vcpkg/archive/${VCPKG_VERSION}.tar.gz" |
             tar -C vcpkg --strip-components=1 -zxf -
         vcpkg/bootstrap-vcpkg.sh -disableMetrics
     - name: Build google-cloud-cpp-bigquery
+      env:
+        FEATURES: ${{ steps.dynamic.outputs.features }}
+        VCPKG_ROOT: ${{ runner.temp }}/vcpkg
+        EXECUTE_INTEGRATION_TESTS: ${{ inputs.execute-integration-tests }}
       run: |
-        export VCPKG_ROOT="${{ runner.temp }}/vcpkg"
-        export EXECUTE_INTEGRATION_TESTS=${{ inputs.execute-integration-tests }}
-        /opt/homebrew/bin/bash ci/gha/builds/macos-cmake.sh ${{ steps.dynamic.outputs.features }}
+        /opt/homebrew/bin/bash ci/gha/builds/macos-cmake.sh ${FEATURES}
     - name: Post Tests Disk Space
       run: df -m
     env:
