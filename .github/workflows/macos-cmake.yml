@@ -3,17 +3,13 @@ name: macOS-CMake-Builds
 on:
   workflow_call:
     inputs:
-      checkout-ref:
-        required: true
-        description: "The ref we want to compile"
-        type: string
       full-matrix:
         required: true
         description: "Build the full matrix"
         type: boolean
       sccache-mode:
         required: true
-        description: "READ_WRITE or DISABLED"
+        description: "READ_WRITE, READ_ONLY, or DISABLED"
         type: string
       vcpkg-cache-mode:
         required: true
@@ -33,28 +29,27 @@ jobs:
     runs-on: ${{ matrix.os }}
     permissions:
       contents: 'read'
-      id-token: 'write'
     strategy:
       # Continue other builds even if one fails
       fail-fast: false
       matrix:
         exclude-from-full-trick: [ true ]
-        os: [ macos-14 ]
+        os: [ macos-26 ]
         shard: [ All ]
     steps:
-    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       with:
-        ref: ${{ inputs.checkout-ref }}
-    - uses: google-github-actions/auth@v2
-      if: ${{ inputs.sccache-mode == 'READ_WRITE' && inputs.vcpkg-cache-mode == 'readwrite' }}
+        persist-credentials: false
+    - uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+      if: ${{ inputs.sccache-mode == 'READ_WRITE' || inputs.vcpkg-cache-mode == 'readwrite' }}
       with:
         create_credentials_file: true
         credentials_json: ${{ secrets.BUILD_CACHE_KEY }}
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
       id: py311
       with:
-        python-version: '3.11'
-    - uses: google-github-actions/setup-gcloud@v2
+        python-version: '3.14'
+    - uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
       env:
         CLOUDSDK_PYTHON: ${{ steps.py311.outputs.python-path }}
     - name: Dynamic Configuration
@@ -63,39 +58,38 @@ jobs:
       run: |
         echo "vcpkg-version=$(cat ci/etc/vcpkg-version.txt)" >> "${GITHUB_OUTPUT}"
         all_features=(bigquery_unified)
+        features="$(printf ",%s" "${all_features[@]}")"
         echo "features=${features:1}" >> "${GITHUB_OUTPUT}"
     - name: Install bash >= 5.x, Ninja, and bison
       run: brew install bash ninja bison
     - name: Pre Tests Disk Space
       run: df -m
-    - name: Install CMake==3.27.2
-      working-directory: "${{runner.temp}}"
-      run: |
-        # Remove the older CMake version
-        brew unlink cmake
-        # Download the Homebrew formula for CMake==3.27.2
-        curl -fsSL -o cmake.rb https://raw.githubusercontent.com/Homebrew/homebrew-core/fd21fcf239bcd0231c9fed5719403ec128151af4/Formula/cmake.rb
-        brew install cmake.rb
     - name: Download and Install sccache
       if: ${{ inputs.sccache-mode != 'DISABLED' }}
       working-directory: "${{runner.temp}}"
       run: |
-        curl -fsSL https://github.com/mozilla/sccache/releases/download/v0.9.1/sccache-v0.9.1-x86_64-apple-darwin.tar.gz | \
+        mkdir -p /Users/runner/.cargo/bin
+        curl -fsSL https://github.com/mozilla/sccache/releases/download/v0.9.1/sccache-v0.9.1-aarch64-apple-darwin.tar.gz | \
           tar -zxf - --strip-components=1 && \
         chmod +x sccache && \
         mv sccache /Users/runner/.cargo/bin/sccache
+        echo "/Users/runner/.cargo/bin" >> "${GITHUB_PATH}"
     - name: Download and Install vcpkg
       working-directory: "${{runner.temp}}"
+      env:
+        VCPKG_VERSION: ${{ steps.dynamic.outputs.vcpkg-version }}
       run: |
         mkdir -p vcpkg
-        curl -fsSL "https://github.com/microsoft/vcpkg/archive/${{ steps.dynamic.outputs.vcpkg-version }}.tar.gz" |
+        curl -fsSL "https://github.com/microsoft/vcpkg/archive/${VCPKG_VERSION}.tar.gz" |
             tar -C vcpkg --strip-components=1 -zxf -
         vcpkg/bootstrap-vcpkg.sh -disableMetrics
     - name: Build google-cloud-cpp-bigquery
+      env:
+        FEATURES: ${{ steps.dynamic.outputs.features }}
+        VCPKG_ROOT: ${{ runner.temp }}/vcpkg
+        EXECUTE_INTEGRATION_TESTS: ${{ inputs.execute-integration-tests }}
       run: |
-        export VCPKG_ROOT="${{ runner.temp }}/vcpkg"
-        export EXECUTE_INTEGRATION_TESTS=${{ inputs.execute-integration-tests }}
-        /opt/homebrew/bin/bash ci/gha/builds/macos-cmake.sh ${{ steps.dynamic.outputs.features }}
+        /opt/homebrew/bin/bash ci/gha/builds/macos-cmake.sh ${FEATURES}
     - name: Post Tests Disk Space
       run: df -m
     env:
