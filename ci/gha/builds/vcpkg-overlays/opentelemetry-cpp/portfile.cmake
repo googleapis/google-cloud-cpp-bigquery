@@ -10,10 +10,11 @@ vcpkg_from_github(
     REF
     "v${VERSION}"
     SHA512
-    6dc0357d8b3410852d3f970f72b8bec59dba9d6c533ca600432102e65de161903bd9170d98cef7ff0af5191309577ffd2a69ccd004b840914a910a6a282204e4
+    db9745be96907431c32a69230b29a5bddba0654f3f379f6cd0827f44895ef39c9612381303ec239d6ad98920bcc4006a90e25b715ade9ddf30aff843d1931416
     HEAD_REF
     main
     PATCHES
+    cmake-quirks.diff
     fix-target_link.patch)
 
 vcpkg_check_features(
@@ -28,8 +29,6 @@ vcpkg_check_features(
     WITH_PROMETHEUS
     elasticsearch
     WITH_ELASTICSEARCH
-    otlp-file
-    WITH_OTLP_FILE
     otlp-http
     WITH_OTLP_HTTP
     otlp-grpc
@@ -46,10 +45,8 @@ vcpkg_check_features(
 
 # opentelemetry-proto is a third party submodule and opentelemetry-cpp release
 # did not pack it.
-if (WITH_OTLP_FILE
-    OR WITH_OTLP_GRPC
-    OR WITH_OTLP_HTTP)
-    set(OTEL_PROTO_VERSION "1.6.0")
+if (WITH_OTLP_GRPC OR WITH_OTLP_HTTP)
+    set(OTEL_PROTO_VERSION "1.5.0")
     vcpkg_download_distfile(
         ARCHIVE
         URLS
@@ -57,7 +54,7 @@ if (WITH_OTLP_FILE
         FILENAME
         "opentelemetry-proto-${OTEL_PROTO_VERSION}.tar.gz"
         SHA512
-        0e72e0c32d2d699d7a832a4c57a9dbe60e844d4c4e8d7b39eb45e4282cde89fccfeef893eae70b9d018643782090a7228c3ef60863b00747498e80f0cf1db8ae
+        8a3f95543c6093300f0c54f31bf050137d0c6f1d867a7cda7af066b83572643e636b33a9b53e297f8c309bc262dde63cf7c10f515e0fe0cbbce1d12fafbe2482
     )
 
     vcpkg_extract_source_archive(src ARCHIVE "${ARCHIVE}")
@@ -73,7 +70,7 @@ if (WITH_OTLP_FILE
         "-DgRPC_CPP_PLUGIN_EXECUTABLE=${CURRENT_HOST_INSTALLED_DIR}/tools/grpc/grpc_cpp_plugin${VCPKG_HOST_EXECUTABLE_SUFFIX}"
     )
 endif ()
-list(APPEND FEATURE_OPTIONS -DCMAKE_CXX_STANDARD=17 -DWITH_STL=CXX17)
+list(APPEND FEATURE_OPTIONS -DCMAKE_CXX_STANDARD=17)
 
 set(OPENTELEMETRY_CPP_EXTERNAL_COMPONENTS "OFF")
 
@@ -116,6 +113,7 @@ vcpkg_cmake_configure(
     -DBUILD_TESTING=OFF
     -DWITH_EXAMPLES=OFF
     -DOPENTELEMETRY_INSTALL=ON
+    -DWITH_ABSEIL=ON
     -DWITH_BENCHMARK=OFF
     -DOPENTELEMETRY_EXTERNAL_COMPONENT_PATH=${OPENTELEMETRY_CPP_EXTERNAL_COMPONENTS}
     ${FEATURE_OPTIONS}
