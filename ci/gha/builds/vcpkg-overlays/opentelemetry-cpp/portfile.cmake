@@ -14,7 +14,7 @@ vcpkg_from_github(
     HEAD_REF
     main
     PATCHES
-    cmake-quirks.diff
+    cmake-quirks.patch
     fix-target_link.patch)
 
 vcpkg_check_features(
